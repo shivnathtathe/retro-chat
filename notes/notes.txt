@@ -1,0 +1,4 @@
+Backend dependencies : npm i express mongoose dotenv  jsonwebtoken bcryptjs cookie-parser cloudinary socket.io
+
+Dev dependency : npm i nodemon -D
+mango db pass: smj7atCnZqGpflgt
