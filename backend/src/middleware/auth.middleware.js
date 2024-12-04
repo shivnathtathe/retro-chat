@@ -4,8 +4,10 @@ import User from "../models/user.model.js";
 
 export const protectRoute = async (req, res ,next)=>{
     //next will call the next fun that is in the route
+    debugger;
     try {
-        const token  =  req.cookie.jwtToken;
+        const token  =  req.cookies.jwtToken;
+        console.log(token);
         if(!token){
             return res.status(401).json({message:"No token provided!"});
         }

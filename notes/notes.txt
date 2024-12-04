@@ -2,3 +2,16 @@ Backend dependencies : npm i express mongoose dotenv  jsonwebtoken bcryptjs cook
 
 Dev dependency : npm i nodemon -D
 mango db pass: smj7atCnZqGpflgt
+
+
+Frontend:
+npm i react-router-dom react-hot-toast
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+
+//daisy ui
+
+npm install axios zustand
+//zustand declerable state management solution
+
+npm i lucide-react --> for icons

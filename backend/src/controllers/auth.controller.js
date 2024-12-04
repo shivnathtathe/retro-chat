@@ -1,6 +1,7 @@
 import User from "../models/user.model.js"
 import bcrypt from "bcryptjs"
 import {generateJWTToken} from "../lib/utils.lib.js"
+import cloudinary from "../lib/cloudinary.libs.js"
 
 export const signup = async (req, res) => {
     const {fullName,email,password}= req.body
@@ -29,8 +30,9 @@ export const signup = async (req, res) => {
         });
 
         if (newUser){
-            generateJWTToken(newUser._id,res)
+            
             await newUser.save();
+            generateJWTToken(newUser._id,res)
             res.status(201).json({
                 _id : newUser._id,
                 fullName: newUser.fullName,
@@ -87,8 +89,26 @@ export const logout = (req, res) => {
 export const updateProfilePic = async (req, res)=>{
     try {
         const {profilePic} = req.body;
-        req.user._id
+        const userId = req.user._id;
+        if (!profilePic){
+            return res.status(400).json({message: "Profile pic is required!"});
+        }
+
+        const profilePicUploadResponse = await cloudinary.uploader.upload(profilePic);
+        //Updated profile pic in database
+        const updatedUser = await User.findByIdAndUpdate(userId, {profilePic:profilePicUploadResponse.secure_url},{new:true})
+        return res.status(200).json({updatedUser});
     } catch (error) {
-        
+        console.log("Error in the update profile controller: "+error)
+        res.status(500).json({message: "Internal server error"});
+    }
+};
+
+export const checkUserAuth = (req,res) =>{
+    try {
+        res.status(200).json(req.user);
+    } catch (error) {
+        console.log("Error in the checkUserAuth controller: "+error)
+        res.status(500).json({message: "Internal server error"});
     }
 };
